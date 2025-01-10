@@ -1,12 +1,30 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button, StatusBar, Alert, Platform } from 'react-native';
+import * as Sharing from 'expo-sharing';
+import { Asset } from 'expo-asset';
 
 export default function App() {
+
+  const share = async () => {
+    const asset = Asset.fromModule(require('./assets/my-image.png'));
+    await asset.downloadAsync(); // Ensure the file is available locally
+    const fileUri = asset.localUri;
+  
+    try {
+      await Sharing.shareAsync(fileUri);
+    } catch (error) {
+      console.error('Sharing failed:', error);
+    }
+  };
+
+
   return (
+    <>
+    <StatusBar hidden={true}/>
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Text>Sharing between apps</Text>
+      <Button title="Share" onPress={share} />
     </View>
+    </>
   );
 }
 
