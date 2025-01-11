@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
 
 With this code you can share the image in multiple platforms and ways.
 
-## Run the App
+### 1.6 Run the App
 iOS:
 ```
 npx react-native run-ios
@@ -104,6 +104,23 @@ Android:
 ```
 npx react-native run-android
 ```
+
+## 2. Customize the Share Sheet
+If you need full control over the share pop-up (e.g., prioritize specific apps), you can build a custom share sheet UI in React Native. Here's how:
+
+### 2.1 Create a List of Preferred Apps
+Define a list of apps (Instagram, Facebook, etc.) with their package names (Android) or URL schemes (iOS).
+```js
+const preferredApps = [
+  { name: 'Instagram', package: 'com.instagram.android', scheme: 'instagram://' },
+  { name: 'Facebook', package: 'com.facebook.katana', scheme: 'fb://' },
+  { name: 'LinkedIn', package: 'com.linkedin.android', scheme: 'linkedin://' },
+  { name: 'X', package: 'com.twitter.android', scheme: 'x://' },
+];
+```
+
+### 2.2 Display a Custom Modal
+Create a modal with buttons for each app.
 
 
 ## References
