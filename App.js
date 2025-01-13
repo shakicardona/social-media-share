@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Alert, Platform, TouchableOpacity } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
@@ -6,67 +7,6 @@ import { Asset } from 'expo-asset';
 
 
 export default function App() {
-
-  const shareToInstagram = async () => {
-    const isInstalled = await isInstagramInstalled();
-    if (!isInstalled) {
-      Alert.alert('Instagram not installed', 'Please install Instagram to share the image.');
-      return;
-    }
-
-    // Load the image from assets
-    const asset = Asset.fromModule(require('./assets/my-image.png'));
-    await asset.downloadAsync();
-    const fileUri = asset.localUri;
-
-    if (Platform.OS === 'ios') {
-
-      /* ios NOT WORKING */
-      /*// Attempt to open Instagram with the file
-        const instagramURL = `instagram://library?LocalIdentifier=${fileUri}`;
-        const supported = await Linking.canOpenURL(instagramURL);
-        if (supported) {
-          await Linking.openURL(instagramURL);
-        } else {
-          Alert.alert('Instagram Not Installed', 'Please install Instagram to share this image.');
-        }
-          */
-
-
-    } else {
-      // Android-specific intent
-      const urlScheme = 'com.instagram.android';
-      const shareIntent = {
-        action: 'android.intent.action.SEND',
-        type: 'image/*',
-        package: urlScheme,
-        extras: {
-          'android.intent.extra.STREAM': fileUri,
-        },
-      };
-
-      Sharing.shareAsync(fileUri, shareIntent).catch((err) =>
-        Alert.alert('Error', 'Failed to share on Instagram.')
-      );
-    }
-  };
-
-  const isInstagramInstalled = async () => {
-    if (Platform.OS === 'ios') {
-      // Check if Instagram can be opened
-      return Linking.canOpenURL('instagram://');
-    } else if (Platform.OS === 'android') {
-      // Check using package name
-      const url = 'https://play.google.com/store/apps/details?id=com.instagram.android';
-      try {
-        const canOpen = await Linking.canOpenURL(url);
-        return canOpen;
-      } catch (e) {
-        console.error('Error checking Instagram:', e);
-        return false;
-      }
-    }
-  };
 
   const shareImage = async () => {
     const asset = Asset.fromModule(require('./assets/my-image.png'));
@@ -106,7 +46,7 @@ export default function App() {
           </TouchableOpacity>
 
           {/* Instagram share */}
-          <TouchableOpacity style={styles.buttonContainer} onPress={shareToInstagram}>
+          <TouchableOpacity style={styles.buttonContainer} onPress={null}>
             <Image
               source={require('./assets/icons/instagram.png')}
               contentFit='contain'
